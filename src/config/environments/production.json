@@ -1,0 +1,10 @@
+{
+  "app": {
+    "name": "SmartPyme"
+  },
+  "api": {
+    "security": "https://security-smartpyme-dev.azurewebsites.net/api/v1/"
+  },
+  "i18nDebug": false,
+  "cloudEnv": "development"
+}

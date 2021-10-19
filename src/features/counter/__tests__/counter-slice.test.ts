@@ -1,12 +1,7 @@
-import counterReducer, {
-  CounterState,
-  increment,
-  decrement,
-  incrementByAmount,
-} from './counterSlice';
+import { counterReducer, decrement, ICounterState, increment, incrementByAmount } from '../store';
 
 describe('counter reducer', () => {
-  const initialState: CounterState = {
+  const initialState: ICounterState = {
     value: 3,
     status: 'idle',
   };

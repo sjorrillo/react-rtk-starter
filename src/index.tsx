@@ -1,21 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import { store } from './app/store';
+import App from './app/app';
 import { Provider } from 'react-redux';
-import * as serviceWorker from './serviceWorker';
+import { setupRootStore } from './app/store';
+import { initTranslations } from './app/modules/i18n';
+import { initApiClient } from './app/modules/xhr';
+import { applyServerSettings } from './config';
+import { BASE_LANGUAGE } from './app/modules/i18n/setup-i18n';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+applyServerSettings((config) => {
+  const store = setupRootStore();
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+  initApiClient(store);
+
+  const renderApp = () => {
+    ReactDOM.render(
+      <React.StrictMode>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </React.StrictMode>,
+      document.getElementById('root')
+    );
+  }
+
+  initTranslations({ lng: BASE_LANGUAGE, debug: config.i18nDebug }, renderApp);
+});

@@ -2,30 +2,64 @@
   "name": "react-rtk-starter",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@reduxjs/toolkit": "^1.6.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^24.9.1",
-    "@types/node": "^12.20.24",
-    "@types/react": "^16.14.15",
-    "@types/react-dom": "^16.9.14",
-    "@types/react-redux": "^7.1.18",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-redux": "^7.2.5",
-    "react-scripts": "4.0.3",
-    "typescript": "~4.1.5"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "clean": "npm cache clean --force && rimraf node_modules build",
+    "clean:dist": "rimraf build",
+    "build:i18n": "bnr build-i18n",
+    "build:config": "bnr build-config",
+    "build": "bnr build",
+    "start": "bnr start",
+    "eject": "react-scripts eject",
+    "lint": "npm run lint-files -- src --ext .js,.ts,.tsx",
+    "lint:fix": "npm run lint -- --fix ",
+    "lint-files": "eslint --cache --cache-location='.cache/' -f friendly",
+    "type-check": "tsc --pretty --noEmit",
+    "type-check:watch": "npm run type-check --  --watch",
+    "test": "FORCE_COLOR=true TZ=UTC node --max-old-space-size=4096 node_modules/.bin/jest --notify --logHeapUsage --detectOpenHandles --config jest.config.js"
+  },
+  "betterScripts": {
+    "build-config": {
+      "command": "npx babel-node ./scripts/build-config.ts --extensions '.ts'"
+    },
+    "build-i18n": {
+      "command": "npx babel-node ./scripts/build-i18n.ts --extensions '.ts'"
+    },
+    "build": {
+      "command": "bnr build-config && react-scripts build",
+      "env": {
+        "CLOUD_ENV": "production",
+        "NODE_ENV": "production"
+      }
+    },
+    "start": {
+      "command": "bnr build-config && react-scripts start",
+      "env": {
+        "CLOUD_ENV": "development",
+        "NODE_ENV": "development",
+        "PORT": 3500
+      }
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,ts,tsx}": [
+      "eslint --fix -f friendly",
+      "prettier --write"
+    ],
+    "src/**/*.scss": [
+      "sass-lint-auto-fix",
+      "sass-lint -v"
+    ]
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -38,5 +72,58 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.6.1",
+    "classnames": "^2.3.1",
+    "i18next": "^20.6.1",
+    "lodash": "^4.17.21",
+    "memoize-one": "^5.2.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.5",
+    "redux-logger": "^3.0.6",
+    "redux-observable": "^2.0.0",
+    "rxjs": "^6.6.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/node": "^7.15.4",
+    "@babel/preset-typescript": "^7.15.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^24.9.1",
+    "@types/lodash": "^4.14.173",
+    "@types/node": "^12.20.24",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-redux": "^7.1.18",
+    "@typescript-eslint/eslint-plugin": "^4.31.2",
+    "@typescript-eslint/parser": "^4.31.2",
+    "all-object-keys": "^2.2.0",
+    "alphabetize-object-keys": "^3.0.0",
+    "better-npm-run": "^0.1.1",
+    "edit-json-file": "^1.6.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-formatter-friendly": "^7.0.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jest": "^24.4.2",
+    "eslint-plugin-jest-dom": "^3.9.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "fs": "^0.0.1-security",
+    "husky": "^7.0.2",
+    "jest-localstorage-mock": "^2.4.18",
+    "lint-staged": "^11.1.2",
+    "react-scripts": "^4.0.3",
+    "rimraf": "^3.0.2",
+    "ts-jest": "26.5.6",
+    "typescript": "^4.3.2"
   }
 }
