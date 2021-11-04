@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const useBoolean = (initialState: boolean) => {
+export const useBoolean = (initialState = false) => {
 
   const [value, setValue] = React.useState(initialState);
 
@@ -8,5 +8,5 @@ export const useBoolean = (initialState: boolean) => {
   const off = React.useCallback(() => setValue(false), []);
   const toggle = React.useCallback(() => setValue((prev) => !prev), []);
 
-  return [value, { on, off, toggle }] as const
+  return [value, { on, off, toggle, set: setValue }] as const
 };

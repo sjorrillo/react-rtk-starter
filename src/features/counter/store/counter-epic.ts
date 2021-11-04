@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { baseActionEpic } from '../../../app/store/base-epic';
+import { baseActionEpic } from '../../../core/store/base-epic';
 import { actions } from './counter-slice';
 
 // const delayTime = 1000

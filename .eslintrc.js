@@ -34,6 +34,14 @@ module.exports = {
     },
   ],
   rules: {
+    'no-restricted-imports': [
+      'error', {
+        paths: [{
+          'name': 'lodash',
+          'message': "Please use `import <package> from 'lodash/<package>';` instead"
+        }]
+      }
+    ],
     camelcase: [
       2,
       {
@@ -48,16 +56,16 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 0,
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-var-requires': 0,
-    '@typescript-eslint/no-unused-vars':  [
-        2,
-        {
-          vars: 'all',
-          args: 'after-used',
-          varsIgnorePattern: '^_',
-          argsIgnorePattern: '^_',
-          ignoreRestSiblings: true,
-        },
-      ],
+    '@typescript-eslint/no-unused-vars': [
+      2,
+      {
+        vars: 'all',
+        args: 'after-used',
+        varsIgnorePattern: '^_',
+        argsIgnorePattern: '^_',
+        ignoreRestSiblings: true,
+      },
+    ],
     'no-empty-function': 0,
     'import/no-extraneous-dependencies': 0,
     'import/prefer-default-export': 0,

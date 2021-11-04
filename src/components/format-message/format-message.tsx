@@ -1,6 +1,6 @@
 import React from 'react';
 import memoizeOne from 'memoize-one';
-import t from '../../app/modules/i18n/i18n-utils';
+import t from '../../core/modules/i18n/i18n-utils';
 import nullish from '../../utils/helpers/nullish';
 import type { KeyValuePair } from '../../utils/base-types';
 import { isFunction, isObject, isString } from '../../utils/helpers/type-of';
@@ -13,6 +13,7 @@ interface IOwnProps {
     namespace?: string;
     inline?: boolean;
     className?: string;
+    style?: React.CSSProperties;
 }
 
 const splitElements = (elements: ElementsType) => Object.keys(elements).reduce<string[][]>((acc, key) => {
@@ -80,7 +81,7 @@ const replaceElements = memoizeOne((path: string, elements: ElementsType) => {
     }, [translation]);
 });
 
-export const FormatMessage: React.FC<IOwnProps> = ({ path, elements, namespace, inline = true, ...restProps }) => {
+export const FormatMessage: React.FC<IOwnProps> = ({ path, elements, namespace, inline = true, style, ...restProps }) => {
     const translationKey = React.useMemo(() => {
         const paths = path ? [path] : [];
         !nullish(namespace) && paths.push(namespace as string);
@@ -90,6 +91,7 @@ export const FormatMessage: React.FC<IOwnProps> = ({ path, elements, namespace, 
 
     return React.createElement(inline ? 'span' : 'div', {
         'data-component': 'format-message',
+        style: { color: 'currentColor', ...(style || {}), },
         ...restProps
     }, ...replaceElements(translationKey, elements));
 }

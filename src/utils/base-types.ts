@@ -14,3 +14,5 @@ export interface IOption<T = string> {
     disabled?: boolean;
     [key: string]: any;
 }
+
+export type OrderDirection = 'asc' | 'desc';

@@ -1,5 +1,5 @@
 import React from 'react';
-import t from '../../app/modules/i18n';
+import t from '../../core/modules/i18n';
 
 import { useAppDispatch, useAppSelector } from '../../utils/ui/hooks';
 import {

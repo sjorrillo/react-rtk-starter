@@ -3,17 +3,17 @@ import path from 'path';
 import alphabetize from 'alphabetize-object-keys';
 import fs from 'fs';
 import merge from 'lodash/merge';
-import { AVAILABLE_LANGUAGES, AVAILABLE_NAMESPACES, BASE_LANGUAGE, ILngNameSpaces } from '../src/app/modules/i18n/setup-i18n';
+import { AVAILABLE_LANGUAGES, AVAILABLE_NAMESPACES, BASE_LANGUAGE,  ILngNamespaces } from '../src/core/modules/i18n/setup-i18n';
 
 const buildTranslationFilePath = (lng: string, ns: string) => path.join(__dirname, `../src/assets/i18n/${lng}/${ns}.json`);
 
 const readTranslations = (lng: string) =>
-  AVAILABLE_NAMESPACES.reduce<ILngNameSpaces>((acc, ns) => {
+  AVAILABLE_NAMESPACES.reduce<ILngNamespaces>((acc, ns) => {
     acc[ns] = JSON.parse(fs.readFileSync(buildTranslationFilePath(lng, ns)) as any);
     return acc;
-  }, {} as ILngNameSpaces);
+  }, {} as ILngNamespaces);
 
-const getTranslationKeys = (baseTranslations: ILngNameSpaces) => AVAILABLE_NAMESPACES.reduce((acc, ns) => {
+const getTranslationKeys = (baseTranslations: ILngNamespaces) => AVAILABLE_NAMESPACES.reduce((acc, ns) => {
   acc[ns] = Object.keys(baseTranslations[ns]).reduce((iacc, key) => {
     iacc[key] = `[${BASE_LANGUAGE}]: ${baseTranslations[ns][key]}`;
     return iacc;
