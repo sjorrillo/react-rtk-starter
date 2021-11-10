@@ -13,7 +13,7 @@ import {
 import styles from './Counter.module.css';
 import { FormatMessage } from '../../components/format-message';
 
-export function Counter() {
+function Counter() {
   const count = useAppSelector(selectCount);
   const dispatch = useAppDispatch();
   const [incrementAmount, setIncrementAmount] = React.useState('2');
@@ -94,3 +94,5 @@ export function Counter() {
     </div>
   );
 }
+
+export default Counter;
