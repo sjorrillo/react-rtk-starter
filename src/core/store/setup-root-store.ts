@@ -2,20 +2,25 @@ import { Action, AnyAction, configureStore, EnhancedStore } from '@reduxjs/toolk
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { createEpicMiddleware } from 'redux-observable';
 import config from '../../config';
+import ApiClient, { buildApiUrl } from '../modules/xhr/api-client';
 import { IEpicDependencies } from './base-epic';
 import { IRootState, queryMiddleares, rootEpic, rootReducer } from './root-store';
 
-
 let _store: EnhancedStore<IRootState>;
 
-export const getStore = () => {
+export const getStore = (client?: ApiClient) => {
   if (_store) return _store;
 
-  const epictMiddleware = createEpicMiddleware<Action<AnyAction>, Action<AnyAction>, IRootState, IEpicDependencies>({
+  const epictMiddleware = createEpicMiddleware<
+    Action<AnyAction>,
+    Action<AnyAction>,
+    IRootState,
+    IEpicDependencies
+  >({
     dependencies: {
-      client: '',
-      buildSecurityUrl: () => '',
-    }
+      client: client as ApiClient,
+      buildSecurityUrl: buildApiUrl('security'),
+    },
   });
   const middlewares = [epictMiddleware];
   if (config.isDevelopment) {
@@ -31,15 +36,16 @@ export const getStore = () => {
 
   _store = configureStore({
     reducer: rootReducer,
-    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(middlewares, queryMiddleares as any), // If you are not using rtk query you can disable thunk { thunk: false }
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(middlewares, queryMiddleares as any), // If you are not using rtk query you can disable thunk { thunk: false }
   });
 
-  epictMiddleware.run(rootEpic);
+  epictMiddleware.run(rootEpic as any);
   return _store;
 };
 
-export const setupRootStore = () => {
-  const store = getStore();
+export const setupRootStore = (client: ApiClient) => {
+  const store = getStore(client);
 
   if (config.isDevelopment) {
     // just publish it globally to easily
@@ -49,7 +55,7 @@ export const setupRootStore = () => {
 
   // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
   // see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
-  setupListeners(store.dispatch)
+  setupListeners(store.dispatch);
 
   return store;
 };

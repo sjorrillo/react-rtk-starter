@@ -3,7 +3,7 @@
     "name": "RKT - Observables"
   },
   "api": {
-    "security": "https://fake-url.com/api/v1/"
+    "security": "https://reqres.in/api/"
   },
   "i18nDebug": false,
   "cloudEnv": "development"

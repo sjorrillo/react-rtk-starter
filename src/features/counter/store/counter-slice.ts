@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
+import { completeState, createEpicReducer } from '../../../core/store/base-reducer';
 export interface ICounterState {
   value: number;
   status: 'idle' | 'loading' | 'failed';
@@ -27,10 +27,11 @@ export const counterSlice = createSlice({
       console.log('ping slice', state.value + 10);
       state.value += 10;
     },
-    pong: (state) => {
-      console.log('pong slice', state.value - 1);
+    pong: createEpicReducer<ICounterState, string>((state, action) => {
+      const newState = completeState(action.payload, action.error);
+      console.log('pong slice', { action, newState });
       state.value -= 1;
-    },
+    }),
   },
 });
 

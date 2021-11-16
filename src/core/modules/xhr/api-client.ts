@@ -1,5 +1,3 @@
-import url from 'url';
-
 import omit from 'lodash/omit';
 import { stringifyUrl } from 'query-string';
 import { Observable, of, Subscriber, throwError } from 'rxjs';
@@ -28,7 +26,8 @@ export const buildApiUrl = (apiName: string) => (path: string) => {
   if (isUrl(path)) return path;
 
   const endpoint = path[0] === '/' ? path.substring(1) : path;
-  return new url.URL(endpoint, config.api[apiName]);
+  const url = new URL(endpoint, config.api[apiName]);
+  return url.href;
 };
 
 export default class ApiClient {
@@ -38,7 +37,10 @@ export default class ApiClient {
   post!: (url: string, { data, params, headers }?: IClientParms) => Observable<AjaxResponse | any>;
   put!: (url: string, { data, params, headers }?: IClientParms) => Observable<AjaxResponse | any>;
   patch!: (url: string, { data, params, headers }?: IClientParms) => Observable<AjaxResponse | any>;
-  delete!: (url: string, { data, params, headers }?: IClientParms) => Observable<AjaxResponse | any>;
+  delete!: (
+    url: string,
+    { data, params, headers }?: IClientParms
+  ) => Observable<AjaxResponse | any>;
   upload!: (
     url: string,
     { data, params, headers, progressSubscriber, isPutHttpVerb }?: IClientParms
