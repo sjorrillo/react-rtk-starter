@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 import { Action, AnyAction, PayloadAction } from '@reduxjs/toolkit';
 import { StateObservable } from 'redux-observable';
 import { merge, Observable, ObservableInput, of, throwError, timer } from 'rxjs';
@@ -61,7 +62,6 @@ export const baseActionEpic =
       debounce(() => (nullish(debounceMs) ? of() : timer(debounceMs as number))),
       pluck('payload'),
       switchMap((payload) => {
-        // eslint-disable-next-line no-prototype-builtins
         const { onSettled } = (
           isObject(payload) && (payload as any).hasOwnProperty('onSettled') ? payload : {}
         ) as ICallbackActionParams<TResult>;

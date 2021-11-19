@@ -41,6 +41,7 @@ export default class ApiClient {
     url: string,
     { data, params, headers }?: IClientParms
   ) => Observable<AjaxResponse | any>;
+
   upload!: (
     url: string,
     { data, params, headers, progressSubscriber, isPutHttpVerb }?: IClientParms
